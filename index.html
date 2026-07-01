@@ -16,8 +16,10 @@
       --text-light: #64748b; /* Slate-500 */
       --bg: #f8fafc; /* Slate-50 */
       --white: #ffffff;
+      --border: #e2e8f0;
       --error: #ef4444;
       --success: #22c55e;
+      --warning: #f59e0b;
       --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.08);
       --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
@@ -535,6 +537,178 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    /* Mock Database Styles */
+    .leads-section {
+      padding: 3rem 0;
+      background-color: #f1f5f9;
+      border-top: 1px solid var(--border);
+    }
+
+    .leads-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .leads-title h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .leads-title p {
+      color: var(--text-light);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .table-container {
+      background-color: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.875rem;
+    }
+
+    th {
+      background-color: #f8fafc;
+      padding: 0.75rem 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .badge-success { background-color: #dcfce7; color: var(--success); }
+    .badge-info { background-color: #e0f2fe; color: #0284c7; }
+
+    .btn-action {
+      background-color: var(--bg);
+      border: 1px solid #cbd5e1;
+      color: var(--secondary);
+      padding: 0.35rem 0.75rem;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.75rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action:hover {
+      background-color: #e2e8f0;
+    }
+
+    .btn-clear {
+      background-color: var(--error);
+      color: var(--white);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-clear:hover {
+      opacity: 0.9;
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 2.5rem;
+      color: var(--text-light);
+    }
+
+    /* Simple pipeline log modal */
+    .log-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .log-modal-content {
+      background-color: var(--white);
+      border-radius: 0.75rem;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .log-modal-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+    }
+
+    .log-modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.25rem;
+      color: var(--text-light);
+    }
+
+    .log-modal-body {
+      padding: 1.25rem;
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: monospace;
+      font-size: 0.75rem;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .log-line {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+    .log-line::before {
+      content: "> ";
+      color: var(--primary-light);
+    }
   </style>
   <script>
     // Initialize dataLayer for GTM
@@ -708,6 +882,52 @@
     </div>
   </section>
 
+  <!-- Leads Database section (100% serverless, using browser localStorage database) -->
+  <section class="leads-section">
+    <div class="container">
+      <div class="leads-header">
+        <div class="leads-title">
+          <h2>🔍 Submitted Leads Database (Local Storage)</h2>
+          <p>Real-time mock database storing form submissions and simulated integration pipelines for evaluation.</p>
+        </div>
+        <button type="button" class="btn-clear" id="btn-clear-db">Reset Database</button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>HubSpot Sync</th>
+              <th>WhatsApp Dispatch</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="leads-table-body">
+            <tr>
+              <td colspan="6" class="no-data">No enquiries submitted yet. Use the booking form to submit some test data!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal log trace viewer -->
+  <div class="log-modal" id="log-modal">
+    <div class="log-modal-content">
+      <div class="log-modal-header">
+        <span id="modal-title">Enquiry Pipeline Logs</span>
+        <button class="log-modal-close" id="btn-close-modal">&times;</button>
+      </div>
+      <div class="log-modal-body" id="modal-log-content">
+        <!-- Logs loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
   <!-- WhatsApp Widget -->
   <a href="https://wa.me/919102018451?text=Hi%20OrthoNow%2C%20I%20would%20like%20to%20book%20an%20orthopedic%20consultation." class="whatsapp-widget" id="whatsapp-chat-widget" target="_blank" aria-label="Chat with us on WhatsApp">
     <svg class="whatsapp-icon" viewBox="0 0 24 24">
@@ -733,6 +953,13 @@
       const summaryName = document.getElementById("summary-name");
       const summaryPhone = document.getElementById("summary-phone");
       const resetBtn = document.getElementById("reset-form-btn");
+
+      const leadsTableBody = document.getElementById("leads-table-body");
+      const btnClearDb = document.getElementById("btn-clear-db");
+      const modal = document.getElementById("log-modal");
+      const modalTitle = document.getElementById("modal-title");
+      const modalLogContent = document.getElementById("modal-log-content");
+      const btnCloseModal = document.getElementById("btn-close-modal");
 
       // Indian Phone Validation: Starts with 6-9, followed by 9 digits
       const indianPhoneRegex = /^[6-9]\d{9}$/;
@@ -768,6 +995,58 @@
         }
 
         return isValid;
+      }
+
+      // Render leads table from Local Storage
+      function renderLeads() {
+        const storedLeads = JSON.parse(localStorage.getItem('orthonow_enquiries') || '[]');
+        
+        if (storedLeads.length === 0) {
+          leadsTableBody.innerHTML = '<tr><td colspan="6" class="no-data">No enquiries submitted yet. Use the booking form to submit some test data!</td></tr>';
+          return;
+        }
+
+        leadsTableBody.innerHTML = '';
+        storedLeads.forEach(lead => {
+          const dateString = new Date(lead.timestamp).toLocaleTimeString() + ' ' + new Date(lead.timestamp).toLocaleDateString();
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${dateString}</strong></td>
+            <td><strong>${lead.name}</strong></td>
+            <td><code>${lead.phone}</code></td>
+            <td><span class="badge-status badge-success">${lead.hubspot_status}</span></td>
+            <td><span class="badge-status badge-info">${lead.whatsapp_status}</span></td>
+            <td><button type="button" class="btn-action" data-id="${lead.id}">View Logs</button></td>
+          `;
+          leadsTableBody.appendChild(tr);
+        });
+
+        // Attach logs click handler
+        document.querySelectorAll(".btn-action").forEach(btn => {
+          btn.addEventListener("click", function() {
+            const leadId = this.getAttribute("data-id");
+            showLeadLogs(leadId);
+          });
+        });
+      }
+
+      function showLeadLogs(leadId) {
+        const storedLeads = JSON.parse(localStorage.getItem('orthonow_enquiries') || '[]');
+        const lead = storedLeads.find(l => l.id === leadId);
+        
+        if (!lead) return;
+
+        modalTitle.textContent = `Pipeline logs for ${lead.name}`;
+        modalLogContent.innerHTML = '';
+
+        lead.logs.forEach(log => {
+          const div = document.createElement('div');
+          div.className = 'log-line';
+          div.textContent = log;
+          modalLogContent.appendChild(div);
+        });
+
+        modal.style.display = "flex";
       }
 
       // Handle form submission
@@ -807,7 +1086,32 @@
           console.log("dataLayer Array:", window.dataLayer);
           console.groupEnd();
 
-          // Update Summary and Switch States
+          // 3. Save to localStorage database
+          const storedLeads = JSON.parse(localStorage.getItem('orthonow_enquiries') || '[]');
+          
+          // Generate simulated integration audit logs
+          const leadId = `lead_${Date.now()}`;
+          const newLead = {
+            id: leadId,
+            name: name,
+            phone: "+91 " + phone,
+            timestamp: new Date().toISOString(),
+            hubspot_status: 'Contact Created / Updated',
+            whatsapp_status: 'Scheduled (Within 2m)',
+            logs: [
+              `[${new Date().toISOString()}] Form submitted successfully. Client data captured.`,
+              `[${new Date().toISOString()}] Searching HubSpot for existing phone number: +91 ${phone}`,
+              `[${new Date().toISOString()}] Phone number deduplication check passed. No overwriting mismatch identified.`,
+              `[${new Date().toISOString()}] HubSpot contact created successfully. ID: hs_cnt_${Math.floor(Math.random() * 1000000)}`,
+              `[${new Date().toISOString()}] Forwarding WhatsApp dispatch template to Karix Gateway queue...`,
+              `[${new Date().toISOString()}] WhatsApp message scheduled. Delivery SLA set < 2 minutes.`
+            ]
+          };
+
+          storedLeads.push(newLead);
+          localStorage.setItem('orthonow_enquiries', JSON.stringify(storedLeads));
+
+          // 4. Update Summary and Switch States
           summaryName.textContent = name;
           summaryPhone.textContent = "+91 " + phone;
 
@@ -819,6 +1123,9 @@
           submitBtn.disabled = false;
           btnText.style.display = "inline";
           btnLoader.style.display = "none";
+
+          // Refresh database visual list
+          renderLeads();
         }, 350);
       });
 
@@ -832,6 +1139,22 @@
         
         thankYouState.style.display = "none";
         formInteractiveState.style.display = "block";
+      });
+
+      // Reset Database
+      btnClearDb.addEventListener("click", function() {
+        if (confirm("Are you sure you want to clear all lead entries from the local storage database?")) {
+          localStorage.removeItem('orthonow_enquiries');
+          renderLeads();
+        }
+      });
+
+      // Modal close events
+      btnCloseModal.addEventListener("click", () => modal.style.display = "none");
+      window.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          modal.style.display = "none";
+        }
       });
 
       // Tracks click events on header Call button
@@ -855,6 +1178,9 @@
         });
         console.log("GTM Tracked: WhatsApp Chat Widget Clicked");
       });
+
+      // Render initial leads table on load
+      renderLeads();
     });
   </script>
 </body>
