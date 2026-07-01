@@ -552,12 +552,15 @@
         </svg>
         OrthoNow
       </a>
-      <a href="tel:+918040003000" class="btn-call" id="header-call-btn">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-        </svg>
-        <span>Call Now</span>
-      </a>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/admin" style="color: var(--text-light); text-decoration: none; font-size: 0.875rem; font-weight: 600;">Admin Panel</a>
+        <a href="tel:+918040003000" class="btn-call" id="header-call-btn">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+          </svg>
+          <span>Call Now</span>
+        </a>
+      </div>
     </div>
   </header>
 
@@ -786,40 +789,61 @@
         btnText.style.display = "none";
         btnLoader.style.display = "block";
 
-        // Simulate fast network latency to feel native (350ms)
-        setTimeout(() => {
-          // Prepare parameters
-          const gtmEvent = {
-            event: "consultation_form_submitted",
-            patient_name: name,
-            patient_phone: "+91" + phone,
-            campaign_city: "Bengaluru",
-            page_title: document.title,
-            timestamp: new Date().toISOString()
-          };
+        // Submit POST request to backend API
+        fetch('/api/leads', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: name,
+            phone: phone,
+            clinic_preference: 'Bengaluru Clinic'
+          })
+        })
+        .then(response => response.json())
+        .then(result => {
+          if (result.success) {
+            // Prepare parameters for GTM dataLayer
+            const gtmEvent = {
+              event: "consultation_form_submitted",
+              patient_name: name,
+              patient_phone: "+91" + phone,
+              campaign_city: "Bengaluru",
+              page_title: document.title,
+              timestamp: new Date().toISOString()
+            };
 
-          // 1. Fire GTM dataLayer push
-          window.dataLayer.push(gtmEvent);
+            // 1. Fire GTM dataLayer push
+            window.dataLayer.push(gtmEvent);
 
-          // 2. Print to browser console for easy inspection by interviewer
-          console.group("%c GTM Event Triggered: consultation_form_submitted ", "background: #0f766e; color: #fff; padding: 4px; border-radius: 4px; font-weight: bold;");
-          console.log("Event Schema:", JSON.stringify(gtmEvent, null, 2));
-          console.log("dataLayer Array:", window.dataLayer);
-          console.groupEnd();
+            // 2. Print to browser console
+            console.group("%c GTM Event Triggered: consultation_form_submitted ", "background: #0f766e; color: #fff; padding: 4px; border-radius: 4px; font-weight: bold;");
+            console.log("Event Schema:", JSON.stringify(gtmEvent, null, 2));
+            console.log("dataLayer Array:", window.dataLayer);
+            console.groupEnd();
 
-          // Update Summary and Switch States
-          summaryName.textContent = name;
-          summaryPhone.textContent = "+91 " + phone;
+            // Update Summary and Switch States
+            summaryName.textContent = name;
+            summaryPhone.textContent = "+91 " + phone;
 
-          // Transition states
-          formInteractiveState.style.display = "none";
-          thankYouState.style.display = "flex";
-
+            // Transition states
+            formInteractiveState.style.display = "none";
+            thankYouState.style.display = "flex";
+          } else {
+            alert("Error saving lead: " + (result.error || "Unknown server error"));
+          }
+        })
+        .catch(err => {
+          console.error("Submission API Error:", err);
+          alert("Network error: Could not connect to the backend server.");
+        })
+        .finally(() => {
           // Reset button loader
           submitBtn.disabled = false;
           btnText.style.display = "inline";
           btnLoader.style.display = "none";
-        }, 350);
+        });
       });
 
       // Handle Form Reset (Submit another request)
