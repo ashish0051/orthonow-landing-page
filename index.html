@@ -709,6 +709,37 @@
       content: "> ";
       color: var(--primary-light);
     }
+    
+    /* Floating Watermark Styles */
+    .developer-watermark {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(15, 118, 110, 0.2);
+      padding: 0.75rem 1.25rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+      font-size: 0.75rem;
+      color: #1e293b;
+      z-index: 998;
+      line-height: 1.4;
+    }
+    .developer-watermark a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    @media (max-width: 640px) {
+      .developer-watermark {
+        position: static;
+        margin: 2rem auto;
+        width: calc(100% - 3rem);
+        max-width: 400px;
+        text-align: center;
+      }
+    }
   </style>
   <script>
     // Initialize dataLayer for GTM
@@ -1183,5 +1214,15 @@
       renderLeads();
     });
   </script>
+
+  <!-- Floating Watermark -->
+  <div class="developer-watermark">
+    <div style="font-weight: 700; color: #0f766e; margin-bottom: 0.15rem;">Developed & Integrated by:</div>
+    <div style="font-weight: 600; font-size: 0.875rem;">Ashish Kumar Singh</div>
+    <div style="color: #64748b;">Gopalganj, Bihar</div>
+    <div style="margin-top: 0.35rem; font-family: monospace; font-size: 0.7rem;">
+      <a href="mailto:ashish1053singh@gmail.com">ashish1053singh@gmail.com</a>
+    </div>
+  </div>
 </body>
 </html>
