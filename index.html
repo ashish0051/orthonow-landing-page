@@ -827,6 +827,35 @@
                 <div class="error-message" id="phone-error">Please enter a valid 10-digit Indian phone number.</div>
               </div>
 
+              <div class="form-group">
+                <label for="city_preference">City Preference</label>
+                <div class="input-wrapper">
+                  <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                  <select id="city_preference" name="city_preference" required style="width: 100%; padding: 0.875rem 1rem 0.875rem 2.75rem; border: 1px solid #cbd5e1; border-radius: 0.75rem; font-family: var(--font); font-size: 1rem; color: var(--secondary); background-color: var(--bg); transition: all 0.2s ease; appearance: none; -webkit-appearance: none;">
+                    <option value="" disabled selected>Select Preferred City</option>
+                    <option value="Bengaluru">Bengaluru</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Gurgaon">Gurgaon</option>
+                    <option value="Noida">Noida</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Patna">Patna</option>
+                    <option value="Gorakhpur">Gorakhpur</option>
+                    <option value="Lucknow">Lucknow</option>
+                    <option value="Gopalganj">Gopalganj</option>
+                    <option value="Chennai">Chennai</option>
+                  </select>
+                  <div style="position: absolute; right: 1rem; pointer-events: none; color: var(--text-light); display: flex; align-items: center;">
+                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M7 10l5 5 5-5z"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="error-message" id="city-error">Please select your preferred city.</div>
+              </div>
+
               <button type="submit" class="btn-submit" id="submit-btn">
                 <span id="btn-text">Confirm Booking Request</span>
                 <div class="loader" id="btn-loader"></div>
@@ -848,7 +877,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
               </svg>
             </div>
-            <h2 class="ty-title">Booking Received!</h2>
+            <h2 class="ty-title">Thank You!</h2>
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem; text-align: center;">Booking Received</h3>
             <p class="ty-message">We have received your request. A care representative is checking availability and will call you in 15 minutes.</p>
             
             <div class="ty-details-box">
@@ -862,7 +892,7 @@
               </div>
               <div class="ty-detail-row">
                 <span class="ty-detail-lbl">Preferred City:</span>
-                <span class="ty-detail-val">Bengaluru</span>
+                <span class="ty-detail-val" id="summary-city">-</span>
               </div>
             </div>
 
@@ -983,6 +1013,9 @@
       
       const summaryName = document.getElementById("summary-name");
       const summaryPhone = document.getElementById("summary-phone");
+      const summaryCity = document.getElementById("summary-city");
+      const cityInput = document.getElementById("city_preference");
+      const cityError = document.getElementById("city-error");
       const resetBtn = document.getElementById("reset-form-btn");
 
       const leadsTableBody = document.getElementById("leads-table-body");
@@ -1023,6 +1056,16 @@
         } else {
           phoneInput.classList.remove("error");
           phoneError.style.display = "none";
+        }
+
+        // Validate City Selection
+        if (!cityInput.value) {
+          cityInput.classList.add("error");
+          cityError.style.display = "block";
+          isValid = false;
+        } else {
+          cityInput.classList.remove("error");
+          cityError.style.display = "none";
         }
 
         return isValid;
@@ -1098,12 +1141,14 @@
 
         // Simulate fast network latency to feel native (350ms)
         setTimeout(() => {
+          const selectedCity = cityInput.value;
+          
           // Prepare parameters
           const gtmEvent = {
             event: "consultation_form_submitted",
             patient_name: name,
             patient_phone: "+91" + phone,
-            campaign_city: "Bengaluru",
+            campaign_city: selectedCity,
             page_title: document.title,
             timestamp: new Date().toISOString()
           };
@@ -1131,7 +1176,7 @@
             whatsapp_status: 'Scheduled (Within 2m)',
             logs: [
               `[${new Date().toISOString()}] Form submitted successfully. Client data captured.`,
-              `[${new Date().toISOString()}] Searching HubSpot for existing phone number: +91 ${phone}`,
+              `[${new Date().toISOString()}] Searching HubSpot for existing phone number: +91 ${phone} in city: ${selectedCity}`,
               `[${new Date().toISOString()}] Phone number deduplication check passed. No overwriting mismatch identified.`,
               `[${new Date().toISOString()}] HubSpot contact created successfully. ID: hs_cnt_${Math.floor(Math.random() * 1000000)}`,
               `[${new Date().toISOString()}] Forwarding WhatsApp dispatch template to Karix Gateway queue...`,
@@ -1145,6 +1190,7 @@
           // 4. Update Summary and Switch States
           summaryName.textContent = name;
           summaryPhone.textContent = "+91 " + phone;
+          summaryCity.textContent = selectedCity;
 
           // Transition states
           formInteractiveState.style.display = "none";
@@ -1165,8 +1211,10 @@
         form.reset();
         nameInput.classList.remove("error");
         phoneInput.classList.remove("error");
+        cityInput.classList.remove("error");
         nameError.style.display = "none";
         phoneError.style.display = "none";
+        cityError.style.display = "none";
         
         thankYouState.style.display = "none";
         formInteractiveState.style.display = "block";
