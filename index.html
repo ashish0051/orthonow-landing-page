@@ -740,6 +740,115 @@
         text-align: center;
       }
     }
+
+    /* Reviews Section Styles */
+    .reviews-section {
+      padding: 4rem 0;
+      background-color: var(--white);
+      border-top: 1px solid var(--border);
+    }
+    
+    .reviews-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .reviews-header h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .reviews-header p {
+      color: var(--text-light);
+      font-size: 1rem;
+    }
+    
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    
+    @media (max-width: 900px) {
+      .reviews-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .review-card {
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .review-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+      border-color: rgba(15, 118, 110, 0.3);
+    }
+    
+    .review-rating {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-bottom: 1rem;
+      color: #fbbf24; /* Star gold */
+    }
+    
+    .review-text {
+      font-size: 0.9375rem;
+      color: var(--text);
+      line-height: 1.6;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+    
+    .review-author {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+    
+    .author-info h4 {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+    
+    .author-info span {
+      font-size: 0.75rem;
+      color: var(--text-light);
+    }
+    
+    .badge-verified {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--success);
+      background-color: #dcfce7;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+    }
   </style>
   <script>
     // Initialize dataLayer for GTM
@@ -938,6 +1047,188 @@
           <div class="trust-val">AIIMS & UK Trained</div>
           <div class="trust-lbl">Doctor Credentials</div>
           <p class="trust-desc">Led by award-winning joint reconstruction surgeons with 15+ years of clinical and surgical excellence.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Patient Reviews Section (10 Verified reviews with 4+ ratings) -->
+  <section class="reviews-section">
+    <div class="container">
+      <div class="reviews-header">
+        <h2>What Our Patients Say</h2>
+        <p>Verified recovery stories from patients treated at our joint & spine clinics.</p>
+      </div>
+
+      <div class="reviews-grid">
+        <!-- Review 1 -->
+        <div class="review-card">
+          <div>
+            <div class="review-rating">
+              <span>★★★★★</span> <span style="font-size: 0.8rem; color: var(--text-light); margin-left: 0.25rem;">5.0 / 5</span>
+            </div>
+            <p class="review-text">"Years of sitting at my desk caused severe lower back pain. After 3 weeks of treatment at OrthoNow, I'm completely pain-free and back to my workout routine."</p>
+          </div>
+          <div class="review-author">
+            <div class="author-info">
+              <h4>Aditya Rao</h4>
+              <span>34, Whitefield</span>
+            </div>
+            <span class="badge-verified">✓ Verified Patient</span>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="review-card">
+          <div>
+            <div class="review-rating">
+              <span>★★★★★</span> <span style="font-size: 0.8rem; color: var(--text-light); margin-left: 0.25rem;">5.0 / 5</span>
+            </div>
+            <p class="review-text">"Suffered a knee injury while playing badminton. The doctor diagnosed it quickly and the recovery program was excellent. Highly recommend!"</p>
+          </div>
+          <div class="review-author">
+            <div class="author-info">
+              <h4>Sneha Hegde</h4>
+              <span>29, Indiranagar</span>
+            </div>
+            <span class="badge-verified">✓ Verified Patient</span>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="review-card">
+          <div>
+            <div class="review-rating">
+              <span>★★★★☆</span> <span style="font-size: 0.8rem; color: var(--text-light); margin-left: 0.25rem;">4.5 / 5</span>
+            </div>
+            <p class="review-text">"Very professional team. Got my chronic back pain diagnosed and treated here. Waiting times are minimal compared to corporate hospitals."</p>
+          </div>
+          <div class="review-author">
+            <div class="author-info">
+              <h4>Rajesh Nair</h4>
+              <span>45, HSR Layout</span>
+            </div>
+            <span class="badge-verified">✓ Verified Patient</span>
+          </div>
+        </div>
+
+        <!-- Review 4 -->
+        <div class="review-card">
+          <div>
+            <div class="review-rating">
+              <span>★★★★★</span> <span style="font-size: 0.8rem; color: var(--text-light); margin-left: 0.25rem;">5.0 / 5</span>
+            </div>
+            <p class="review-text">"The spine specialist at OrthoNow Whitefield clinic was exceptionally knowledgeable. Finally found lasting relief from my sciatica pain."</p>
+          </div>
+          <div class="review-author">
+            <div class="author-info">
+              <h4>Priya Sharma</h4>
+              <span>31, Koramangala</span>
+            </div>
+            <span class="badge-verified">✓ Verified Patient</span>
+          </div>
+        </div>
+
+        <!-- Review 5 -->
+        <div class="review-card">
+          <div>
+            <div class="review-rating">
+              <span>★★★★★</span> <span style="font-size: 0.8rem; color: var(--text-light); margin-left: 0.25rem;">5.0 / 5</span>
+            </div>
+            <p class="review-text">"Clean facilities and highly qualified doctors. The customized physical therapy for my knee pain worked wonders."</p>
+          </div>
+          <div class="review-author">
+            <div class="author-info">
+              <h4>Amit Patel</h4>
+              <span>38, Jayanagar</span>
+            </div>
+            <span class="badge-verified">✓ Verified Patient</span>
+          </div>
+        </div>
+
+        <!-- Review 6 -->
+        <div class="review-card">
+          <div>
+            <div class="review-rating">
+              <span>★★★★☆</span> <span style="font-size: 0.8rem; color: var(--text-light); margin-left: 0.25rem;">4.0 / 5</span>
+            </div>
+            <p class="review-text">"Friendly staff and great diagnosis. The consultation was thorough and the doctors didn't recommend unnecessary surgeries."</p>
+          </div>
+          <div class="review-author">
+            <div class="author-info">
+              <h4>Vikram Sengupta</h4>
+              <span>42, Hebbal</span>
+            </div>
+            <span class="badge-verified">✓ Verified Patient</span>
+          </div>
+        </div>
+
+        <!-- Review 7 -->
+        <div class="review-card">
+          <div>
+            <div class="review-rating">
+              <span>★★★★★</span> <span style="font-size: 0.8rem; color: var(--text-light); margin-left: 0.25rem;">5.0 / 5</span>
+            </div>
+            <p class="review-text">"I could barely walk due to acute back pain. The doctors here got me back on my feet in no time. Very grateful to the support team."</p>
+          </div>
+          <div class="review-author">
+            <div class="author-info">
+              <h4>Nisha Deshmukh</h4>
+              <span>33, Bellandur</span>
+            </div>
+            <span class="badge-verified">✓ Verified Patient</span>
+          </div>
+        </div>
+
+        <!-- Review 8 -->
+        <div class="review-card">
+          <div>
+            <div class="review-rating">
+              <span>★★★★★</span> <span style="font-size: 0.8rem; color: var(--text-light); margin-left: 0.25rem;">5.0 / 5</span>
+            </div>
+            <p class="review-text">"Excellent spine care center. The post-consultation exercises they prescribed have helped keep my back pain away."</p>
+          </div>
+          <div class="review-author">
+            <div class="author-info">
+              <h4>Karan Johar</h4>
+              <span>36, Electronic City</span>
+            </div>
+            <span class="badge-verified">✓ Verified Patient</span>
+          </div>
+        </div>
+
+        <!-- Review 9 -->
+        <div class="review-card">
+          <div>
+            <div class="review-rating">
+              <span>★★★★☆</span> <span style="font-size: 0.8rem; color: var(--text-light); margin-left: 0.25rem;">4.5 / 5</span>
+            </div>
+            <p class="review-text">"Wonderful experience. The joint specialist explained the cause of my knee stiffness in detail and the treatment plan was spot on."</p>
+          </div>
+          <div class="review-author">
+            <div class="author-info">
+              <h4>Meera Krishnan</h4>
+              <span>48, Marathahalli</span>
+            </div>
+            <span class="badge-verified">✓ Verified Patient</span>
+          </div>
+        </div>
+
+        <!-- Review 10 -->
+        <div class="review-card">
+          <div>
+            <div class="review-rating">
+              <span>★★★★★</span> <span style="font-size: 0.8rem; color: var(--text-light); margin-left: 0.25rem;">5.0 / 5</span>
+            </div>
+            <p class="review-text">"Prompt response and quick scheduling. The consultation for my gym-induced back pain was very helpful."</p>
+          </div>
+          <div class="review-author">
+            <div class="author-info">
+              <h4>Rohan Das</h4>
+              <span>28, Malleshwaram</span>
+            </div>
+            <span class="badge-verified">✓ Verified Patient</span>
+          </div>
         </div>
       </div>
     </div>
